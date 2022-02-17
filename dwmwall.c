@@ -1,9 +1,11 @@
 #include <unistd.h>
 #include <dirent.h>
+#include <signal.h>
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <stdbool.h>
 
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
@@ -15,21 +17,31 @@
 
 #include "config.h" 
 
-
 #define STATIC_ASSERT(cond, msg) extern void static_assert_##msg(int hack[(cond) ? 1 : -1])
 #define ARRLEN(a) (sizeof(a)/sizeof(a[0]))
 
+
 STATIC_ASSERT(ARRLEN(dwmwall_dirs) > 0, dirs_must_not_be_empty);
+
 
 static char** imgpaths = NULL;
 static int imgcnt = 0;
-
 
 static Display* disp;
 static Screen* scr;
 static Window win;
 static Pixmap pmap;
+static bool terminate = false;
 
+void dwmwall_sighandler(int signum)
+{
+	switch (signum) {
+	case SIGTERM:
+	case SIGINT:
+		terminate = true;
+		break;
+	}
+}
 
 static void dwmwall_init()
 {
@@ -106,6 +118,9 @@ static void dwmwall_init()
             (unsigned char*)&pmap,
             1
     );
+
+	signal(SIGINT, dwmwall_sighandler);
+	signal(SIGTERM, dwmwall_sighandler);
 }
 
 static void dwmwall_term()
@@ -141,7 +156,7 @@ int main()
 {
     dwmwall_init();
 
-	for (int i = 0 ;; ++i) {
+	for (int i = 0; !terminate; ++i) {
 		if (i == imgcnt)
 			i = 0;
 
