@@ -1,10 +1,10 @@
-CFLAGS=-Wall -Wextra -Os 
+CFLAGS=-Wall -Wextra -Os -march=native
 CLIBS=-lX11 -lImlib2
 
-all: dwmwall 
+all: config.h dwmwall 
 
-dwmwall: dwmwall.c config.h
-	$(CC) $(CFLAGS) $^ $(CLIBS) -o $@
+dwmwall: dwmwall.c
+	$(CC) $(CFLAGS) $< $(CLIBS) -o $@
 
 config.h:
 	cp config.def.h config.h

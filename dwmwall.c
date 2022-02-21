@@ -14,7 +14,6 @@
 #include <X11/Intrinsic.h>
 #include <Imlib2.h>
 
-
 #include "config.h" 
 
 #define STATIC_ASSERT(cond, msg) extern void static_assert_##msg(int hack[(cond) ? 1 : -1])
@@ -45,9 +44,8 @@ void dwmwall_sighandler(int signum)
 
 static void dwmwall_init()
 {
-#ifdef DWMWALL_RANDOMIZE
-    srand(time(NULL));
-#endif
+	if (dwmwall_randomize)
+		srand(time(NULL));
 
     for (size_t i = 0; i < ARRLEN(dwmwall_dirs); ++i) {
         const char* basepath = dwmwall_dirs[i];
@@ -162,7 +160,7 @@ int main()
 
 		char* imgpath;
 
-		if (DWMWALL_RANDOMIZE) {
+		if (dwmwall_randomize) {
 			const int idx = rand() % (imgcnt - i); 
 			imgpath = imgpaths[idx];
 			/* move selected img to the end */
