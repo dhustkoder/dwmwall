@@ -9,5 +9,12 @@ dwmwall: dwmwall.c
 config.h:
 	cp config.def.h config.h
 
+install:
+	cp dwmwall /usr/local/bin/dwmwall
+
+uninstall:
+	rm /usr/local/bin/dwmwall
+
+
 clean:
 	rm dwmwall
