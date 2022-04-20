@@ -14,7 +14,7 @@
 #include <X11/Intrinsic.h>
 #include <Imlib2.h>
 
-#include "config.h" 
+#include "dhust-nx-config.h"
 
 #define STATIC_ASSERT(cond, msg) extern void static_assert_##msg(int hack[(cond) ? 1 : -1])
 #define ARRLEN(a) (sizeof(a)/sizeof(a[0]))
