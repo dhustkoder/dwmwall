@@ -10,7 +10,7 @@ config.h:
 	cp config.def.h config.h
 
 install: all
-	cp dwmwall /usr/local/bin/dwmwall
+	cp -f dwmwall /usr/local/bin/dwmwall
 
 uninstall:
 	rm /usr/local/bin/dwmwall
